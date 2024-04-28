@@ -167,6 +167,9 @@ public class CreditCard {
             } else {
                 // If date record doesn't exist, return closest previous record
                 Map.Entry<String, Double> previousEntry = balanceHistory.lowerEntry(balanceDateStr);
+                if (previousEntry == null) {
+                    return 0.00;
+                }
                 return previousEntry.getValue();
             }
         } else {
