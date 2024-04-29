@@ -18,13 +18,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class CreditCardController {
@@ -149,11 +147,16 @@ public class CreditCardController {
 
                         // Create a new BalanceHistory entry
                         BalanceHistory balanceHistory = new BalanceHistory();
+                        balanceHistory.setCreditCard(creditCard);
                         balanceHistory.setDate(updatePayload.getBalanceDate());
                         balanceHistory.setBalance(updatePayload.getBalanceAmount());
 
                         // Save the BalanceHistory entry to the database
-                        balanceHistoryRepository.save(balanceHistory);
+                        BalanceHistory addedBalanceHistory = balanceHistoryRepository.save(balanceHistory);
+                        if (creditCard.getBalanceHistorySet() == null) {
+                            creditCard.setBalanceHistorySet(new HashSet<>());
+                        }
+                        creditCard.getBalanceHistorySet().add(addedBalanceHistory);
 
                         // Update balance history
                         creditCard.addBalanceHistory(balanceHistory);

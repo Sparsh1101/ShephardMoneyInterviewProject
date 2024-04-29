@@ -282,8 +282,10 @@ class InterviewProjectApplicationTests {
         CreditCard creditCard = new CreditCard();
         BalanceHistory balanceHistory = new BalanceHistory(balanceDate, balanceAmount);
 
-        // Mock creditCardRepository to return the credit card when findByNumber is
-        // called
+        // Associate the CreditCard with the BalanceHistory
+        balanceHistory.setCreditCard(creditCard);
+
+        // Mock creditCardRepository to return the credit card when findByNumber is called
         when(creditCardRepository.findByNumber(creditCardNumber)).thenReturn(Optional.of(creditCard));
         // Mock balanceHistoryRepository to return the saved balance history
         when(balanceHistoryRepository.save(any(BalanceHistory.class))).thenReturn(balanceHistory);

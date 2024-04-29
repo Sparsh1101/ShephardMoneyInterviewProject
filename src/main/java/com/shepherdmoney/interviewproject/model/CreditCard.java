@@ -10,6 +10,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.Set;
 import java.util.TreeMap;
 import java.lang.reflect.Type;
 
@@ -30,6 +31,9 @@ public class CreditCard {
     private String issuanceBank;
 
     private String number;
+
+    @OneToMany(mappedBy = "creditCard", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<BalanceHistory> balanceHistorySet;
 
     // Storing credit card's owner here as foreign key, we can directly query a
     // credit card's owner using card number as required
